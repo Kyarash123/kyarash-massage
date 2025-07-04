@@ -1,0 +1,72 @@
+body {
+    font-family: 'Tahoma', sans-serif;
+    background: linear-gradient(red , rgb(255, 255, 255));
+    height: 2000px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  
+  .audio-box {
+    width: 90%; /* عرض مناسب گوشی */
+    background: linear-gradient(red , black);
+    color: #ffffff;
+    text-align: center;
+    padding: 15px;
+    border-bottom: 2px solid #4f0000;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  
+  .audio-box h2 {
+    font-size: 1.2rem; /* اندازه متن در گوشی */
+    margin: 0;
+  }
+  
+  audio {
+    margin-top: 10px;
+    width: 100%; /* تطبیق با عرض جعبه */
+  }
+  
+  .message-box {
+    width: 90%; /* عرض مناسب گوشی */
+    height: 200px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+    position: relative;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  
+  .message-box h2 {
+    font-size: 1rem; /* اندازه متن در گوشی */
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .animated-text {
+    font-size: 1.1rem; /* اندازه متن پیام */
+  
+    color: #007BFF;
+    animation: fadeIn 1s ease;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  
