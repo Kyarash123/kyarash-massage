@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سورپرایز عاشقانه</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #80008c 0%, #d9007f 100%);
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 30px;
+      padding: 40px 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(10%, 10%); }
+    }
+
+    .hearts-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      animation: float-heart 6s infinite;
+      opacity: 0;
+    }
+
+    @keyframes float-heart {
+      0% {
+        transform: translateY(100%) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100%) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .title {
+      font-size: 2.5em;
+      color: #be04ed;
+      margin-bottom: 10px;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      color: #ff0000;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .music-player {
+      background: linear-gradient(135deg, #d9007f 0%, #80008c 100%);
+      border-radius: 20px;
+      padding: 25px;
+      margin: 30px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .music-icon {
+      font-size: 3em;
+      margin-bottom: 15px;
+      animation: rotate 3s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .music-icon.paused {
+      animation-play-state: paused;
+    }
+
+    .play-button {
+      background: white;
+      color: #ff0000;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .play-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .play-button:active {
+      transform: translateY(-1px);
+    }
+
+    .messages-container {
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .messages-container.active {
+      display: block;
+      animation: fadeIn 1s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message {
+      background: linear-gradient(135deg, #ff4d4d91 0%, #ff7f54a0 100%);
+      padding: 25px;
+      border-radius: 20px;
+      margin: 20px 0;
+      font-size: 1.2em;
+      color: #333;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.5s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .message.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .next-button {
+      background: linear-gradient(135deg, #ff0000 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .next-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .next-button:active {
+      transform: translateY(-1px);
+    }
+
+    .final-message {
+      display: none;
+      font-size: 1.5em;
+      color: #667eea;
+      font-weight: bold;
+      margin-top: 30px;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    .final-message.show {
+      display: block;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.05); }
+    }
+
+    @media (max-width: 600px) {
+      .title {
+        font-size: 2em;
+      }
+      
+      .subtitle {
+        font-size: 1em;
+      }
+      
+      .message {
+        font-size: 1em;
+        padding: 20px;
+      }
+      
+      .card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <div class="card">
+    <div class="hearts-bg" id="heartsContainer"></div>
+    <h1 class="title" id="mainTitle">💝کیارش ی پیام برات داره 💝</h1>
+    <p class="subtitle" id="subtitle">برای تو با عشق آماده شده</p>
+    <div class="music-player" id="musicPlayer">
+     <div class="music-icon" id="musicIcon">
+      🎵
+     </div><button class="play-button" id="playButton">پخش موزیک</button>
+    </div>
+    <div class="messages-container" id="messagesContainer">
+     <div class="message" id="message1">
+      تو نور زندگی منی ✨
+     </div>
+     <div class="message" id="message2">
+      هر لحظه با تو، یک خاطره زیباست 🌹
+     </div>
+     <div class="message" id="message3">
+      دوستت دارم تا ابدیت 💕
+     </div><button class="next-button" id="nextButton">پیام بعدی</button>
+     <div class="final-message" id="finalMessage">
+      همیشه کنارت هستم ❤️
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      main_title: "💝کیارش ی پیام برات داره 💝",
+      subtitle: "دکمه پایین صفحه رو بزن",
+      message_1: "خواستم فقط بگم خیلی خوشحالم که کنارمی :)",
+      message_2: "هر لحظه با تو، شیرین ترین خاطره هارو برام میسازه،دوستت دارم دیوونه :) 💕",
+      message_3: "دوست دارم موندنی ترینم باشی و منم در ازاش:👇",
+      final_message: "همیشه کنارت هستم ❤️",
+      font_family: "Segoe UI",
+      font_size: 16
+    };
+
+    let currentMessageIndex = 0;
+    let isPlaying = false;
+    
+    // ایجاد المنت صوتی - آدرس موزیک خود را اینجا قرار دهید
+    const audio = new Audio('./Asef Aria - Hale Delam.mp3'); // فایل موزیک خود را اینجا قرار دهید
+    audio.loop = true; // ./Asef Aria - Hale Delam.mp3
+
+    function createFloatingHearts() {
+      const container = document.getElementById('heartsContainer');
+      const hearts = ['❤️', '💕', '💖', '💗', '💝'];
+      
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 2 + 's';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        container.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.remove();
+        }, 7000);
+      }, 800);
+    }
+
+    document.getElementById('playButton').addEventListener('click', function() {
+      const musicIcon = document.getElementById('musicIcon');
+      const playButton = document.getElementById('playButton');
+      const musicPlayer = document.getElementById('musicPlayer');
+      const messagesContainer = document.getElementById('messagesContainer');
+      
+      if (!isPlaying) {
+        isPlaying = true;
+        
+        // پخش موزیک
+        audio.play().catch(error => {
+          console.error('خطا در پخش موزیک:', error);
+        });
+        
+        playButton.textContent = 'در حال پخش...';
+        musicIcon.classList.remove('paused');
+        
+        setTimeout(() => {
+          musicPlayer.style.display = 'none';
+          messagesContainer.classList.add('active');
+          showMessage(0);
+        }, 2000);
+      }
+    });
+
+    function showMessage(index) {
+      const messages = document.querySelectorAll('.message');
+      if (index < messages.length) {
+        setTimeout(() => {
+          messages[index].classList.add('show');
+        }, 500);
+      }
+    }
+
+    document.getElementById('nextButton').addEventListener('click', function() {
+      const messages = document.querySelectorAll('.message');
+      currentMessageIndex++;
+      
+      if (currentMessageIndex < messages.length) {
+        showMessage(currentMessageIndex);
+      } else {
+        document.getElementById('nextButton').style.display = 'none';
+        document.getElementById('finalMessage').classList.add('show');
+      }
+    });
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.body.style.background = `linear-gradient(135deg, ${config.background_color || defaultConfig.background_color} 0%, ${config.button_color || defaultConfig.button_color} 100%)`;
+      
+      const card = document.querySelector('.card');
+      card.style.background = `rgba(255, 255, 255, 0.95)`;
+      
+      const title = document.getElementById('mainTitle');
+      title.textContent = config.main_title || defaultConfig.main_title;
+      title.style.color = config.text_color || defaultConfig.text_color;
+      title.style.fontSize = `${baseSize * 2.5}px`;
+      title.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      const subtitle = document.getElementById('subtitle');
+      subtitle.textContent = config.subtitle || defaultConfig.subtitle;
+      subtitle.style.color = config.button_color || defaultConfig.button_color;
+      subtitle.style.fontSize = `${baseSize * 1.2}px`;
+      subtitle.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      const musicPlayer = document.querySelector('.music-player');
+      musicPlayer.style.background = `linear-gradient(135deg, ${config.background_color || defaultConfig.background_color} 0%, ${config.button_color || defaultConfig.button_color} 100%)`;
+      
+      const playButton = document.getElementById('playButton');
+      playButton.style.color = config.text_color || defaultConfig.text_color;
+      playButton.style.fontSize = `${baseSize * 1.1}px`;
+      playButton.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      const message1 = document.getElementById('message1');
+      message1.textContent = config.message_1 || defaultConfig.message_1;
+      message1.style.background = `linear-gradient(135deg, ${config.message_bg_color || defaultConfig.message_bg_color} 0%, #fcb69f 100%)`;
+      message1.style.fontSize = `${baseSize * 1.2}px`;
+      message1.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      const message2 = document.getElementById('message2');
+      message2.textContent = config.message_2 || defaultConfig.message_2;
+      message2.style.background = `linear-gradient(135deg, ${config.message_bg_color || defaultConfig.message_bg_color} 0%, #fcb69f 100%)`;
+      message2.style.fontSize = `${baseSize * 1.2}px`;
+      message2.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      const message3 = document.getElementById('message3');
+      message3.textContent = config.message_3 || defaultConfig.message_3;
+      message3.style.background = `linear-gradient(135deg, ${config.message_bg_color || defaultConfig.message_bg_color} 0%, #fcb69f 100%)`;
+      message3.style.fontSize = `${baseSize * 1.2}px`;
+      message3.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      const nextButton = document.getElementById('nextButton');
+      nextButton.style.background = `linear-gradient(135deg, ${config.background_color || defaultConfig.background_color} 0%, ${config.button_color || defaultConfig.button_color} 100%)`;
+      nextButton.style.fontSize = `${baseSize * 1.1}px`;
+      nextButton.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      const finalMessage = document.getElementById('finalMessage');
+      finalMessage.textContent = config.final_message || defaultConfig.final_message;
+      finalMessage.style.color = config.text_color || defaultConfig.text_color;
+      finalMessage.style.fontSize = `${baseSize * 1.5}px`;
+      finalMessage.style.fontFamily = `${customFont}, ${baseFontStack}`;
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.card_color || defaultConfig.card_color,
+              set: (value) => {
+                config.card_color = value;
+                window.elementSdk.setConfig({ card_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.button_color || defaultConfig.button_color,
+              set: (value) => {
+                config.button_color = value;
+                window.elementSdk.setConfig({ button_color: value });
+              }
+            },
+            {
+              get: () => config.message_bg_color || defaultConfig.message_bg_color,
+              set: (value) => {
+                config.message_bg_color = value;
+                window.elementSdk.setConfig({ message_bg_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["main_title", config.main_title || defaultConfig.main_title],
+          ["subtitle", config.subtitle || defaultConfig.subtitle],
+          ["message_1", config.message_1 || defaultConfig.message_1],
+          ["message_2", config.message_2 || defaultConfig.message_2],
+          ["message_3", config.message_3 || defaultConfig.message_3],
+          ["final_message", config.final_message || defaultConfig.final_message]
+        ])
+      });
+    }
+
+    createFloatingHearts();
+    onConfigChange(defaultConfig);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ae077f8023495f',t:'MTc2MjUzMTA3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
